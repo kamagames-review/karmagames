@@ -1,3 +1,4 @@
+// FIXME: gradle build выдал ошибку
 buildscript {
 	ext {
 		springBootVersion = '1.4.2.RELEASE'
@@ -35,6 +36,7 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-jersey')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	// FIXME: Можно было использовать глобальный репозиторий и не класть артефакты внутрь проекта
 	compile name:'jsi-1.0.0'
 	compile name:'slf4j-api-1.6.3'
 	compile name:'trove4j-2.0.2'
