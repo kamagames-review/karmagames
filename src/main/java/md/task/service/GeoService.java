@@ -16,6 +16,7 @@ import java.util.*;
 
 @Service
 public class GeoService {
+    // FIXME: Непонятное имя
     private SpatialIndex si;
     private List<Float> errors = new ArrayList<>(10_000_000);
     private NavigableMap<Long, Label> labels = new TreeMap<>();
@@ -23,6 +24,7 @@ public class GeoService {
 
     @PostConstruct
     public void preloadData() throws IOException {
+        // FIXME: Можно было бы использовать CsvReader из jackson, например.
         Scanner geoScanner = new Scanner(Paths.get("geo.csv"));
         Scanner lblScanner = new Scanner(Paths.get("lbl.csv"));
 
@@ -41,6 +43,7 @@ public class GeoService {
             rectangles.add(rectangle);
             errors.add(error);
         }
+        // FIXME: Не используется логгирование
         System.out.println("Loaded geo");
         while (lblScanner.hasNext()) {
             String[] lineSplit = lblScanner.nextLine().split(",");
@@ -49,11 +52,15 @@ public class GeoService {
             float y = Float.parseFloat(lineSplit[2]);
             labels.put(userId, new Label(userId, x, y));
         }
+        // FIXME: Не используется логгирование
         System.out.println("Loaded lables");
     }
 
+    // FIXME: Плохое название метода
     public boolean findIfNear(Long userId, Float lat, Float lon) {
+        // FIXME: нет обработки ситуации когда пользователь не существует
         Label label = labels.get(userId);
+        // FIXME: если решили все-таки использовать inner class, то можно было бы объявить его как static и сделать single instance
         class FindIfCloseProcedure implements TIntProcedure {
             public float getError() {
                 return error;
@@ -95,6 +102,7 @@ public class GeoService {
                 , Float.MAX_VALUE);
 
         Rectangle rect = rectangles.get(myProc.getId());
+        // FIXME: Нужно было построить индекс для каждой ячейки, если бы использовали например geohash, то поиск был бы вообще константой
         return labels.values().stream().parallel().filter(lbl -> rect.distance(new Point(lbl.lat, lbl.lon))==0).count();
     }
 
