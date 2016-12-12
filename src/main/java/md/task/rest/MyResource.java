@@ -4,6 +4,7 @@ import md.task.service.GeoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+// FIXME: странное название
 @RestController
 public class MyResource {
     @Autowired
