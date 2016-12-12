@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 @Service
+// FIXME: не используется интерфейс
 public class GeoService {
     // FIXME: Непонятное имя
     private SpatialIndex si;
