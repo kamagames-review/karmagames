@@ -34,8 +34,8 @@ public class Generator {
             for (int j = 0; j < totalSqrt; j++) {
                 String line = "" + (float) (Math.random() * (wStep + hStep) / 2) + "," + wStep * j + "," + h + "\n";
                 pw.print(line);
-                if ((i * totalSqrt + j) % 10000 == 0) {
-                    System.out.println("generated geo " + i);
+                if ((i * totalSqrt + j) % 100000 == 0) {
+                    System.out.println("generated geo " + i*totalSqrt + j);
                 }
             }
 

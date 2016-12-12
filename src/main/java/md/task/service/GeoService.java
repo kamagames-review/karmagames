@@ -17,9 +17,9 @@ import java.util.*;
 @Service
 public class GeoService {
     private SpatialIndex si;
-    private Map<Integer, Float> errorMap = new TreeMap<>();
-    private Map<Long, Label> labels = new TreeMap<>();
-    private List<Rectangle> rectangles = new ArrayList<>(1_000_000);
+    private List<Float> errors = new ArrayList<>(10_000_000);
+    private NavigableMap<Long, Label> labels = new TreeMap<>();
+    private List<Rectangle> rectangles = new ArrayList<>(10_000_000);
 
     @PostConstruct
     public void preloadData() throws IOException {
@@ -29,7 +29,7 @@ public class GeoService {
         si = new RTree();
         si.init(null);
 
-        int id = 1;
+        int id = 0;
         while (geoScanner.hasNext()) {
             String[] lineSplit = geoScanner.nextLine().split(",");
             float error = Float.parseFloat(lineSplit[0]);
@@ -37,9 +37,9 @@ public class GeoService {
             float y = Float.parseFloat(lineSplit[2]);
             Rectangle rectangle = new Rectangle(x - AppConsts.W, y - AppConsts.H,
                     x + AppConsts.W, y + AppConsts.H);
-            si.add(rectangle, id);
+            si.add(rectangle, id++);
             rectangles.add(rectangle);
-            errorMap.put(id++, error);
+            errors.add(error);
         }
         System.out.println("Loaded geo");
         while (lblScanner.hasNext()) {
@@ -63,7 +63,7 @@ public class GeoService {
 
             @Override
             public boolean execute(int rectIndex) {
-                error = errorMap.get(rectIndex);
+                error = errors.get(rectIndex);
                 return true;
             }
         }
@@ -94,7 +94,7 @@ public class GeoService {
         si.nearest(new Point(lat, lon), myProc
                 , Float.MAX_VALUE);
 
-        Rectangle rect = rectangles.get(myProc.getId() - 1);
+        Rectangle rect = rectangles.get(myProc.getId());
         return labels.values().stream().parallel().filter(lbl -> rect.distance(new Point(lbl.lat, lbl.lon))==0).count();
     }
 

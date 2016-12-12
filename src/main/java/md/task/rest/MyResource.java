@@ -11,7 +11,7 @@ public class MyResource {
 
     @RequestMapping(value = "/ifNear/{userId}", method = RequestMethod.GET)
     @ResponseBody
-    public boolean checkIfNear(@PathVariable("userId") Long userId, @RequestParam("lat") Float lat, @RequestParam("lon") Float lon, @RequestParam("dumb") boolean dumb){
+    public boolean checkIfNear(@PathVariable("userId") Long userId, @RequestParam("lat") Float lat, @RequestParam("lon") Float lon){
         return geoService.findIfNear(userId, lat, lon);
 
     }
