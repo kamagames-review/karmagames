@@ -9,7 +9,7 @@ public class Label {
         this.lat = x;
         this.lon = y;
     }
-
+    // FIXME: я подчеркивал, что земля имеет сферическую форму
     public Float findDistance(Float lat, Float lon) {
         return (float)Math.sqrt(Math.pow(lat- this.lat,2) + Math.pow(lon- this.lon,2));
     }
